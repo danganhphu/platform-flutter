@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
+import io.flutter.plugin.common.JSONMethodCodec;
 import io.flutter.plugin.common.MethodChannel;
 
 import android.content.ContextWrapper;
@@ -15,40 +16,22 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Objects;
 
 public class MainActivity extends FlutterActivity {
     private static final String CHANNELBATTERY = "com.example/battery";
     private static final String CHANNELDEVICEINFO = "com.example/deviceinfo";
+    private static final String CHANNELDEVICEINFO2 = "com.example/deviceinfo2";
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
         demoMethodChannelBattery(flutterEngine);
         demoMethodChannelDeviceInfo(flutterEngine);
-//        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
-//                .setMethodCallHandler(
-//                        (call, result) -> {
-//                            // This method is invoked on the main thread.
-//                            if (call.method.equals("getDeviceInfo")) {
-//                                String deviceInfo = getDeviceInfo();
-//                                if (!Objects.equals(deviceInfo, "Unknown")) {
-//                                    result.success(deviceInfo);
-//                                } else {
-//                                    result.error("UNAVAILABLE", "DeviceInfo not available.", null);
-//                                }
-////                                int batteryLevel = getBatteryLevel();
-////
-////                                if (batteryLevel != -1) {
-////                                    result.success(batteryLevel);
-////                                } else {
-////                                    result.error("UNAVAILABLE", "Battery level not available.", null);
-////                                }
-//                            } else {
-//                                result.notImplemented();
-//                            }
-//                        }
-//                );
+        demoMethodChannelDeviceInfo2(flutterEngine);
     }
 
     //phương thức của Battery
@@ -90,6 +73,30 @@ public class MainActivity extends FlutterActivity {
                         }
                 );
     }
+
+    public void demoMethodChannelDeviceInfo2(@NonNull FlutterEngine flutterEngine) {
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNELDEVICEINFO2, JSONMethodCodec.INSTANCE)
+                .setMethodCallHandler(
+                        (call, result) -> {
+                            // This method is invoked on the main thread.
+                            if (call.method.equals("getDeviceInfo2")) {
+                                String type = call.argument("type");
+                                if (!(type == null || type.isEmpty())) {
+                                    result.success(getDeviceInfo2(type));
+                                } else {
+                                    result.error("ERROR", "type can not null", null);
+                                }
+
+
+                            } else {
+                                result.notImplemented();
+                            }
+                        }
+                );
+    }
+
+
+
     private int getBatteryLevel() {
         int batteryLevel = -1;
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -105,7 +112,7 @@ public class MainActivity extends FlutterActivity {
         return batteryLevel;
     }
 
-    private  String getDeviceInfo() {
+    private String getDeviceInfo() {
         String deviceInfo = "Unknown";
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             deviceInfo = Build.MODEL;
@@ -114,5 +121,19 @@ public class MainActivity extends FlutterActivity {
         }
 
         return deviceInfo;
+    }
+
+    private JSONObject getDeviceInfo2(String type) {
+        JSONObject json = new JSONObject();
+        if (type.equals("MODEL")) {
+            try {
+                json.put("result", Build.MODEL);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return json;
+        }
+
+        return null;
     }
 }
