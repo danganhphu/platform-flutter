@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:platform_flutter/channel/channels.dart';
+import 'package:platform_flutter/platform_views/platform_views.dart';
 
 class MyHomepage extends StatelessWidget {
   const MyHomepage({Key? key}) : super(key: key);
@@ -33,6 +34,10 @@ class MyHomepage extends StatelessWidget {
             builButton(context, title: "Battery", description: const MyBattery()),
             buildPadding(),
             builButton(context, title: "Device Info", description: const MyDeviceInfo()),
+            buildPadding(),
+            builButton(context, title: "Android Version", description: const MyVersionDevice()),
+            buildPadding(),
+            builButton(context, title: "Platfrom Views", description: const NativeView()),
             buildPadding(),
             builButton(context, title: "Show Toast", description: const MyShowToast()),
             buildPadding()
