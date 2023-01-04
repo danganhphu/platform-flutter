@@ -1,0 +1,1 @@
+export 'package:platform_flutter/platform_views/native_view.dart';
