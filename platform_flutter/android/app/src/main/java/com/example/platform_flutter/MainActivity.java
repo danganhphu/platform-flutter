@@ -14,7 +14,8 @@ import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
+
+import com.example.platform_flutter.platform_views_textview.NativeTextViewFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ public class MainActivity extends FlutterActivity {
     private static final String CHANNELBATTERY = "com.example/battery";
     private static final String CHANNELDEVICEINFO = "com.example/deviceinfo";
     private static final String CHANNELDEVICEINFO2 = "com.example/deviceinfo2";
+    private static final String CHANNELANDROIDVERSION = "com.example/android_version";
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -32,6 +34,11 @@ public class MainActivity extends FlutterActivity {
         demoMethodChannelBattery(flutterEngine);
         demoMethodChannelDeviceInfo(flutterEngine);
         demoMethodChannelDeviceInfo2(flutterEngine);
+        demoMethodChannelAndroidVersion(flutterEngine);
+        flutterEngine
+                .getPlatformViewsController()
+                .getRegistry()
+                .registerViewFactory("<platform-textview-type>", new NativeTextViewFactory());
     }
 
     //phương thức của Battery
@@ -95,7 +102,24 @@ public class MainActivity extends FlutterActivity {
                 );
     }
 
-
+    public void demoMethodChannelAndroidVersion(@NonNull FlutterEngine flutterEngine) {
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNELANDROIDVERSION)
+                .setMethodCallHandler(
+                        (call, result) -> {
+                            // This method is invoked on the main thread.
+                            if (call.method.equals("getAndroidVersion")) {
+                                String androidVersion = getAndroidVersion();
+                                if (!Objects.equals(androidVersion, "Unknown")) {
+                                    result.success(androidVersion);
+                                } else {
+                                    result.error("UNAVAILABLE", "Android version not available.", null);
+                                }
+                            } else {
+                                result.notImplemented();
+                            }
+                        }
+                );
+    }
 
     private int getBatteryLevel() {
         int batteryLevel = -1;
@@ -135,5 +159,16 @@ public class MainActivity extends FlutterActivity {
         }
 
         return null;
+    }
+
+    private String getAndroidVersion() {
+        String androidVersion = "Unknown";
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            androidVersion = Build.VERSION.RELEASE;
+        } else {
+            androidVersion = "Loi...";
+        }
+
+        return androidVersion;
     }
 }
