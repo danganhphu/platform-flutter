@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyShowToast extends StatefulWidget {
@@ -9,6 +10,29 @@ class MyShowToast extends StatefulWidget {
 }
 
 class _MyShowToastState extends State<MyShowToast> {
+  static const toastChannel = MethodChannel('com.example/toast_channel', JSONMethodCodec());
+
+  String _toastMessage = 'Unknown Message.';
+
+  _getToastMessage() async {
+    String toastMessage;
+    try {
+      var result = await toastChannel.invokeMethod('getToastMessage', {
+        "type": "msg",
+      });
+      if (result != null) {
+        toastMessage = 'Message: xin chào ${result['result']}.';
+      } else {
+        toastMessage = 'Không thể lấy message';
+      }
+    } on PlatformException catch (e) {
+      toastMessage = "Lấy message failed: '${e.message}'.";
+    }
+
+    setState(() {
+      _toastMessage = toastMessage;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +53,10 @@ class _MyShowToastState extends State<MyShowToast> {
     );
   }
 
-  Future<void> _showToast() async {
+  _showToast() async {
+    await _getToastMessage();
     Fluttertoast.showToast(
-        msg: "method channel show toast",
+        msg: _toastMessage,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0

@@ -37,6 +37,8 @@ class MyHomepage extends StatelessWidget {
             buildPadding(),
             builButton(context, title: "Android Version", description: const MyVersionDevice()),
             buildPadding(),
+            builButton(context, title: "Calculate", description: const MyCalculate()),
+            buildPadding(),
             builButton(context, title: "Platfrom Views", description: const NativeView()),
             buildPadding(),
             builButton(context, title: "Show Toast", description: const MyShowToast()),
