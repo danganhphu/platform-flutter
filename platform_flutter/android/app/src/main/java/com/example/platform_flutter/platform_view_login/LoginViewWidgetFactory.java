@@ -6,14 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Map;
-
-import io.flutter.plugin.common.MessageCodec;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 
 public class LoginViewWidgetFactory extends PlatformViewFactory {
-
     public LoginViewWidgetFactory() {
         super(StandardMessageCodec.INSTANCE);
     }

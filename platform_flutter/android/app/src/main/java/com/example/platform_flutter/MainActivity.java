@@ -16,6 +16,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 
 import com.example.platform_flutter.platform_view_login.LoginViewWidgetFactory;
+import com.example.platform_flutter.platform_view_login.LoginWidgetPlugin;
 import com.example.platform_flutter.platform_views_textview.NativeTextViewFactory;
 
 import org.json.JSONException;
@@ -34,19 +35,19 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+
+        flutterEngine.getPlugins().add(new LoginWidgetPlugin());
+
         demoMethodChannelBattery(flutterEngine);
         demoToastMessage(flutterEngine);
         demoCalculate(flutterEngine);
         demoMethodChannelDeviceInfo(flutterEngine);
         demoMethodChannelAndroidVersion(flutterEngine);
+
         flutterEngine
                 .getPlatformViewsController()
                 .getRegistry()
                 .registerViewFactory("<platform-textview-type>", new NativeTextViewFactory());
-        flutterEngine
-                .getPlatformViewsController()
-                .getRegistry()
-                .registerViewFactory("<login-widget-plugin>", new LoginViewWidgetFactory());
     }
 
     //phương thức của Battery

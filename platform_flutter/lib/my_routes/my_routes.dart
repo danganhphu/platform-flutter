@@ -24,12 +24,12 @@ class MyHomepage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Demo MethodChannel"),
+        title: const Text("Demo Platform"),
         centerTitle: true,
       ),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             buildPadding(),
             builButton(context, title: "Battery", description: const MyBattery()),
             buildPadding(),
@@ -39,9 +39,11 @@ class MyHomepage extends StatelessWidget {
             buildPadding(),
             builButton(context, title: "Calculate", description: const MyCalculate()),
             buildPadding(),
-            builButton(context, title: "Platfrom Views", description: const NativeView()),
+            builButton(context, title: "Text Views", description: const NativeView()),
             buildPadding(),
             builButton(context, title: "Show Toast", description: const MyShowToast()),
+            buildPadding(),
+            builButton(context, title: "Login Page", description: const LoginPage()),
             buildPadding()
           ],
         ),
@@ -51,7 +53,7 @@ class MyHomepage extends StatelessWidget {
 
   Padding buildPadding() {
     return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-            );
+      padding: EdgeInsets.symmetric(vertical: 10),
+    );
   }
 }

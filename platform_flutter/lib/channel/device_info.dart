@@ -39,7 +39,7 @@ class _MyDeviceInfoState extends State<MyDeviceInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Device Information Home Page"),
+        title: const Text("Device Information"),
         centerTitle: true,
       ),
       body: Center(
@@ -49,7 +49,7 @@ class _MyDeviceInfoState extends State<MyDeviceInfo> {
             Text(_deviceInfo),
             ElevatedButton(
               onPressed: _jSONMethodCodec,
-              child: const Text('Get device info 2'),
+              child: const Text('Get device info'),
             ),
           ],
         ),

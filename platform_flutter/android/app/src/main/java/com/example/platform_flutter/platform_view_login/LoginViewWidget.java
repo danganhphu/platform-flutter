@@ -17,6 +17,7 @@ import com.example.platform_flutter.R;
 
 import java.util.Map;
 
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.platform.PlatformView;
 
 public class LoginViewWidget implements PlatformView {

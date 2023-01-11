@@ -31,7 +31,7 @@ class _MyVersionDeviceState extends State<MyVersionDevice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Android Version Home Page"),
+        title: const Text("Android Version"),
         centerTitle: true,
       ),
       body: Center(

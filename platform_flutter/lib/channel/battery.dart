@@ -28,25 +28,12 @@ class _MyBatteryState extends State<MyBattery> {
     });
   }
 
-  // Future<void> _getBatteryLevel2() async {
-  //   String batteryLevel2;
-  //   try {
-  //     final int result = await platformBattery2.invokeMethod('getBatteryLevel2');
-  //     batteryLevel2 = 'Pin hiện tại là $result % .';
-  //   } on PlatformException catch (e) {
-  //     batteryLevel2 = "Lấy pin thất bại: '${e.message}'.";
-  //   }
-  //
-  //   setState(() {
-  //     _batteryLevel2 = batteryLevel2;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Battery Level Home Page"),
+        title: const Text("Battery Level"),
         centerTitle: true,
       ),
       body: Center(

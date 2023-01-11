@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class NativeView extends StatefulWidget {
@@ -12,16 +10,16 @@ class NativeView extends StatefulWidget {
 }
 
 class _NativeViewState extends State<NativeView> {
+  static const String viewType = '<platform-textview-type>';
+  // Pass parameters to the platform side.
+  final Map<String, dynamic> creationParams = <String, dynamic>{};
   @override
   Widget build(BuildContext context) {
     // This is used in the platform side to register the view.
-    const String viewType = '<platform-textview-type>';
-    // Pass parameters to the platform side.
-    const Map<String, dynamic> creationParams = <String, dynamic>{};
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Platform Views"),
+        title: const Text("Platform Text Views"),
         centerTitle: true,
       ),
       body: Card(
@@ -29,34 +27,22 @@ class _NativeViewState extends State<NativeView> {
             borderRadius: BorderRadius.circular(10)
         ),
         child: SizedBox(
-          height: 70,
-          child: PlatformViewLink(
-            viewType: viewType,
-            surfaceFactory:
-                (context, controller) {
-              return AndroidViewSurface(
-                controller: controller as AndroidViewController,
-                gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
-                hitTestBehavior: PlatformViewHitTestBehavior.opaque,
-              );
-            },
-            onCreatePlatformView: (params) {
-              return PlatformViewsService.initSurfaceAndroidView(
-                id: params.id,
-                viewType: viewType,
-                layoutDirection: TextDirection.ltr,
-                creationParams: creationParams,
-                creationParamsCodec: const StandardMessageCodec(),
-                onFocus: () {
-                  params.onFocusChanged(true);
-                },
-              )
-                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-                ..create();
-            },
-          ),
+          height: 200,
+          child: buildWidgets()
         ),
       ),
+    );
+  }
+
+  Widget buildWidgets() {
+    if (!(defaultTargetPlatform == TargetPlatform.android)) {
+      return const Text('iOS not implemented yet.');
+    }
+    return AndroidView(
+      viewType: viewType,
+      layoutDirection: TextDirection.ltr,
+      creationParams: creationParams,
+      creationParamsCodec: const StandardMessageCodec(),
     );
   }
 }
